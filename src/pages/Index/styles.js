@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { normalize } from "../../services/normalize";
+import { white, metalBlue } from '../../utils/color';
 
 export const Screen = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background-color: #40495a;
+    background-color: ${metalBlue};
 `;
 
 export const ButtonLogin = styled.TouchableOpacity`
@@ -20,7 +21,7 @@ export const Input = styled.TextInput`
     padding-bottom: ${normalize(10)}px;
     width: ${normalize(315)}px;
     font-size: ${normalize(18)}px;
-    background-color: #ffffff;
+    background-color: ${white};
     border-radius: 5px;
 `;
 
@@ -33,6 +34,13 @@ export const ViewOptions = styled.View`
 
 export const Option = styled.Text`
     font-family: "roboto-thin";
-    color: #ffffff;
+    color: ${white};
     font-size: ${normalize(19)}px;
+`;
+
+export const Logo = styled.Image`
+    width: ${normalize(330)}px;
+    height: ${normalize(330)}px;
+    margin-left: ${normalize(-95)}px;
+    margin-top: ${normalize(-85)}px;
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, StatusBar, ScrollView, Text } from "react-native";
+import { StatusBar, ScrollView } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { normalize } from "../../services/normalize";
 import {
@@ -10,6 +10,7 @@ import {
     Option,
     OptionText,
 } from "./styles";
+import { white, skyLevel1, skyLevel2, skyLevel3, skyLevel4 } from '../../utils/color';
 
 export default ({ navigation }) => {
     return (
@@ -20,7 +21,7 @@ export default ({ navigation }) => {
                 }}
             >
                 <StatusBar
-                    backgroundColor="white"
+                    backgroundColor={white}
                     barStyle="dark-content"
                 ></StatusBar>
                 <ProfileImage
@@ -32,7 +33,7 @@ export default ({ navigation }) => {
                 <WelcomeText>Olá Débora!</WelcomeText>
                 <MenuOptionsView>
                     <Option
-                        colour={"#6fdb9e"}
+                        colour={skyLevel1}
                         size="one"
                         onPress={() => navigation.navigate("step1")}
                     >
@@ -42,27 +43,27 @@ export default ({ navigation }) => {
                             color="white"
                         />
                     </Option>
-                    <Option colour={"#56c6ee"} size="one">
+                    <Option colour={skyLevel2} size="one">
                         <FontAwesome
                             name={"users"}
                             size={normalize(60)}
                             color="white"
                         />
                     </Option>
-                    <Option colour={"#67bbc8"} size="two">
+                    <Option colour={skyLevel3} size="two">
                         <OptionText>Entrar em evento</OptionText>
                     </Option>
-                    <Option colour={"#966ddc"} size="two">
+                    <Option colour={skyLevel4} size="two">
                         <OptionText>Meus eventos</OptionText>
                     </Option>
-                    <Option colour={"#545a57"} size="one">
+                    <Option colour={skyLevel2} size="one">
                         <FontAwesome
                             name={"cog"}
                             size={normalize(80)}
                             color="white"
                         />
                     </Option>
-                    <Option colour={"#df56ee"} size="one">
+                    <Option colour={skyLevel1} size="one">
                         <FontAwesome
                             name={"share-alt"}
                             size={normalize(80)}

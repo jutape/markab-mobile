@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, StatusBar, View, Text, TextInput } from "react-native";
+import { StyleSheet, StatusBar, View, Text, TextInput, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { normalize } from "../../services/normalize";
-import { Screen, ButtonLogin, Input, ViewOptions, Option } from "./styles";
+import { Screen, ButtonLogin, Input, ViewOptions, Option, Logo } from "./styles";
+import { white, metalBlue, logoGradientInit, logoGradientEnd } from '../../utils/color';
 
 export default ({ navigation }) => {
     let [username, setUsername] = useState("");
@@ -11,15 +12,19 @@ export default ({ navigation }) => {
     return (
         <Screen>
             <StatusBar
-                backgroundColor={"#40495a"}
+                backgroundColor={metalBlue}
                 barStyle="light-content"
             ></StatusBar>
             <LinearGradient
-                colors={["#6fdb9e", "#56c6ee"]}
+                colors={[logoGradientInit, logoGradientEnd]}
                 start={[0, 1]}
                 end={[1, 0]}
                 style={styles.circle}
-            />
+            >
+                <Logo
+                    source={require('../../../assets/logo/logo-white.png')}
+                />
+            </LinearGradient>
             <Input
                 placeholder="Usuário"
                 value={username}
@@ -37,10 +42,10 @@ export default ({ navigation }) => {
             />
             <ButtonLogin onPress={() => navigation.navigate("Menu")}>
                 <LinearGradient
-                    colors={["#6fdb9e", "#56c6ee"]}
+                    colors={["#6f93db", "#56e3ee"]}
                     style={styles.loginButton}
                     start={[0, 1]}
-                    end={[0.6, 0]}
+                    end={[1, 0]}
                 >
                     <Text style={styles.loginButtonText}>Login</Text>
                 </LinearGradient>
@@ -54,9 +59,6 @@ export default ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    view: {
-        
-    },
     circle: {
         marginBottom: normalize(100),
         width: normalize(150),
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         fontSize: normalize(18),
-        color: "#fff",
+        color: white,
         fontFamily: "roboto-bold",
     }
 });

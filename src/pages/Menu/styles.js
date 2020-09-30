@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { normalize } from "../../services/normalize";
+import { white } from '../../utils/color';
 
 const optionSize = {
     'one': 150,
@@ -10,7 +11,7 @@ export const SafeView = styled.SafeAreaView`
     flex: 1;
     align-items: stretch;
     justify-content: center;
-    background-color: white;
+    background-color: ${white};
 `;
 
 export const ProfileImage = styled.Image`
@@ -51,6 +52,6 @@ export const Option = styled.TouchableOpacity`
 export const OptionText = styled.Text`
     font-family: "roboto-black";
     font-size: ${normalize(25)}px;
-    color: #ffffff;
+    color: ${white};
     text-align: center;
 `

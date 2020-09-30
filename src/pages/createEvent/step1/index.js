@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, Text, StatusBar } from "react-native";
+import { StyleSheet, View, Text, StatusBar } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { normalize } from "../../../services/normalize";
 import * as Location from "expo-location";
-import { Screen, MapContainer } from './styles';
+import { Screen, MapContainer, Loading } from "./styles";
+import { metalBlue } from '../../../utils/color';
 
 export default ({ navigation }) => {
     const [location, setLocation] = useState(null);
@@ -23,47 +24,53 @@ export default ({ navigation }) => {
     return (
         <Screen>
             <StatusBar
-                backgroundColor={"#40495a"}
+                backgroundColor={metalBlue}
                 barStyle="light-content"
             ></StatusBar>
             <MapContainer>
                 {location ? (
-                    <MapView
-                        style={styles.mapStyle}
-                        initialRegion={{
-                            latitude: location.coords.latitude,
-                            longitude: location.coords.longitude,
-                            latitudeDelta: 0.006,
-                            longitudeDelta: 0.006,
-                        }}
-                    >
-                        <Marker
-                            coordinate={{
+                    <>
+                        <MapView
+                            style={styles.mapStyle}
+                            initialRegion={{
                                 latitude: location.coords.latitude,
                                 longitude: location.coords.longitude,
+                                latitudeDelta: 0.006,
+                                longitudeDelta: 0.006,
                             }}
-                            title={"Casa"}
-                            description={"minha casa"}
-                        />
-                    </MapView>
+                        >
+                            <Marker
+                                coordinate={{
+                                    latitude: location.coords.latitude,
+                                    longitude: location.coords.longitude,
+                                }}
+                                title={"Casa"}
+                                description={"minha casa"}
+                            />
+                        </MapView>
+                        <Text style={styles.textConfirm}>
+                            Confirmar localização?
+                        </Text>
+                        <View style={styles.areaOptions}>
+                            <Text
+                                style={styles.confirmButton}
+                                onPress={() => navigation.navigate("step2")}
+                            >
+                                Sim
+                            </Text>
+                            <Text
+                                style={styles.denyButton}
+                                onPress={() => navigation.navigate("Menu")}
+                            >
+                                Não
+                            </Text>
+                        </View>
+                    </>
                 ) : (
-                    <Text>Carregando...</Text>
+                    <Loading
+                        source={require("../../../../assets/Eclipse-1s-410px.gif")}
+                    />
                 )}
-                <Text style={styles.textConfirm}>Confirmar localização?</Text>
-                <View style={styles.areaOptions}>
-                    <Text
-                        style={styles.confirmButton}
-                        onPress={() => navigation.navigate("step2")}
-                    >
-                        Sim
-                    </Text>
-                    <Text
-                        style={styles.denyButton}
-                        onPress={() => navigation.navigate("Menu")}
-                    >
-                        Não
-                    </Text>
-                </View>
             </MapContainer>
         </Screen>
     );
@@ -77,7 +84,7 @@ const styles = StyleSheet.create({
         height: normalize(600),
     },
     textConfirm: {
-        color: "#40495a",
+        color: metalBlue,
         marginTop: normalize(18),
         fontSize: normalize(26),
         fontFamily: "roboto-black",
