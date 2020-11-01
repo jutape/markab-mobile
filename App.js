@@ -7,9 +7,11 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
 import HomeScreen from "./src/pages/Index";
+import Register from './src/pages/register';
 import Menu from "./src/pages/Menu";
 import step1 from "./src/pages/createEvent/step1";
 import step2 from "./src/pages/createEvent/step2";
+import step3 from "./src/pages/createEvent/step3";
 
 const fetchFonts = () => {
     return Font.loadAsync({
@@ -41,9 +43,11 @@ function App() {
                 initialRouteName="Home"
             >
                 <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="Menu" component={Menu} />
                 <Stack.Screen name="step1" component={step1} />
                 <Stack.Screen name="step2" component={step2} />
+                <Stack.Screen name="step3" component={step3} />
             </Stack.Navigator>
         </NavigationContainer>
     );

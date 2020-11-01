@@ -8,7 +8,7 @@ import { white, metalBlue, logoGradientInit, logoGradientEnd } from '../../utils
 export default ({ navigation }) => {
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
-
+    let [confirmPassword, setConfirmPassword] = useState("");
     return (
         <Screen>
             <StatusBar
@@ -26,6 +26,13 @@ export default ({ navigation }) => {
                 />
             </LinearGradient>
             <Input
+                placeholder="Nome"
+                value={username}
+                autoCompleteType="email"
+                keyboardType="email-address"
+                onChangeText={setUsername}
+            />
+            <Input
                 placeholder="Email"
                 value={username}
                 autoCompleteType="email"
@@ -40,6 +47,14 @@ export default ({ navigation }) => {
                 secureTextEntry={true}
                 onChangeText={setPassword}
             />
+            <Input
+                placeholder="Confirme a senha"
+                value={confirmPassword}
+                autoCompleteType="password"
+                textContentType="password"
+                secureTextEntry={true}
+                onChangeText={setConfirmPassword}
+            />
             <ButtonLogin onPress={() => navigation.navigate("Menu")}>
                 <LinearGradient
                     colors={["#6f93db", "#56e3ee"]}
@@ -47,13 +62,9 @@ export default ({ navigation }) => {
                     start={[0, 1]}
                     end={[1, 0]}
                 >
-                    <Text style={styles.loginButtonText}>Login</Text>
+                    <Text style={styles.loginButtonText}>Registre-se</Text>
                 </LinearGradient>
             </ButtonLogin>
-            <ViewOptions>
-                <Option onPress={() => navigation.navigate("Register")} >Registrar</Option>
-                <Option>Esqueceu a senha?</Option>
-            </ViewOptions>
         </Screen>
     );
 };
