@@ -1,17 +1,15 @@
 {
   "expo": {
-    "name": "makab",
-    "slug": "makab",
+    "name": "markab",
+    "slug": "markab",
     "platforms": [
-      "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo/logo-white.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo/logo-black.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,6 +21,14 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+        "package": "com.markab",
+        "config": {
+            "googleMaps": {
+                "apiKey": "AIzaSyCiC-ryfuqkvCoklcSRREL33v7v5-XoYuw"
+            }
+        }
     }
   }
 }

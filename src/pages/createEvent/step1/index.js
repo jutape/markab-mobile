@@ -21,6 +21,9 @@ export default ({ navigation }) => {
             setLocation(location);
         })();
     }, []);
+
+
+
     return (
         <Screen>
             <StatusBar
@@ -54,7 +57,7 @@ export default ({ navigation }) => {
                         <View style={styles.areaOptions}>
                             <Text
                                 style={styles.confirmButton}
-                                onPress={() => navigation.navigate("step2")}
+                                onPress={() => navigation.navigate("step2", {location})}
                             >
                                 Sim
                             </Text>

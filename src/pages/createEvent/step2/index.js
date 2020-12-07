@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { normalize } from "../../../services/normalize";
+import api from "../../../services/api";
 import {
     SafeView,
     InputBox,
@@ -16,10 +17,14 @@ import {
 } from "./styles";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default ({ navigation }) => {
+export default ({ route, navigation }) => {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState("date");
     const [show, setShow] = useState(false);
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [rPresence, setRPresence] = useState(null);
+    const [description, setDescription] = useState("");
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -40,9 +45,35 @@ export default ({ navigation }) => {
         showMode("time");
     };
 
+    const createEvent = async () => {
+        if (!name || !rPresence || !description) {
+            Alert.alert("Preenchas os campos obrigatórios.");
+        } else {
+            try {
+                const response = await api.post("/api/event", {
+                    name,
+                    password,
+                    radius: parseInt(rPresence, 10),
+                    dateTime: date.toISOString(),
+                    description,
+                    location: {
+                        type: "Point",
+                        coordinates: [route.params.location.coords.latitude, route.params.location.coords.longitude],
+                    },
+                });
+                navigation.navigate("step3", { eventCode: response.data.event.eventCode });
+            } catch (_err) {
+                console.log(_err)
+                Alert.alert(
+                    "Houve um erro ao cadastrar o evento, tente novamente mais tarde!"
+                );
+            }
+        }
+    };
+
     const createThreeButtonAlert = () =>
         Alert.alert("Tem certeza que deseja criar esse evento?", "", [
-            { text: "Sim", onPress: () => navigation.navigate("step3") },
+            { text: "Sim", onPress: createEvent },
             {
                 text: "Não",
                 style: "cancel",
@@ -82,30 +113,34 @@ export default ({ navigation }) => {
                     color="white"
                 />
                 <InputBox>
-                    <TittleBox>Nome do evento</TittleBox>
-                    <TextInput></TextInput>
+                    <TittleBox>Nome do evento*</TittleBox>
+                    <TextInput value={name} onChangeText={setName}></TextInput>
                 </InputBox>
                 <InputBox>
                     <TittleBox>Senha do evento</TittleBox>
                     <TextInput
+                        value={password}
+                        onChangeText={setPassword}
                         autoCompleteType="password"
                         textContentType="password"
                         autoCapitalize="none"
                     ></TextInput>
                 </InputBox>
                 <InputBox>
-                    <TittleBox>Raio de presença do evento</TittleBox>
+                    <TittleBox>Raio de presença do evento*</TittleBox>
                     <AlternativeInput>
                         <Input
                             width="40"
                             align="center"
                             keyboardType="numeric"
+                            value={rPresence}
+                            onChangeText={setRPresence}
                         ></Input>
                         <InputText>Metros</InputText>
                     </AlternativeInput>
                 </InputBox>
                 <InputBox>
-                    <TittleBox>Data do evento</TittleBox>
+                    <TittleBox>Data do evento*</TittleBox>
                     <AlternativeInput>
                         <InputText onPress={showDatepicker}>
                             {dateFormate(date)}
@@ -123,7 +158,7 @@ export default ({ navigation }) => {
                     </AlternativeInput>
                 </InputBox>
                 <InputBox>
-                    <TittleBox>Hora do evento</TittleBox>
+                    <TittleBox>Hora do evento*</TittleBox>
                     <AlternativeInput>
                         <InputText onPress={showTimepicker}>
                             {hourFormate(date)}
@@ -140,15 +175,13 @@ export default ({ navigation }) => {
                         )}
                     </AlternativeInput>
                 </InputBox>
-                <InputBox>
-                    <TittleBox>Máximo de convidados</TittleBox>
-                    <TextInput keyboardType="numeric"></TextInput>
-                </InputBox>
                 <InputBox size="big">
-                    <TittleBox>Descrição</TittleBox>
+                    <TittleBox>Descrição*</TittleBox>
                     <BigTextInput
                         multiline={true}
                         numberOfLines={4}
+                        value={description}
+                        onChangeText={setDescription}
                     ></BigTextInput>
                 </InputBox>
                 <ConfirmBox>

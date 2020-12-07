@@ -1,16 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, StatusBar, View, Text, TextInput, Image } from "react-native";
+import { Video } from "expo-av";
+import {StyleSheet, StatusBar, View, Text, TextInput, Image, Alert} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { normalize } from "../../services/normalize";
 import { Screen, ButtonLogin, Input, ViewOptions, Option, Logo } from "./styles";
 import { white, metalBlue, logoGradientInit, logoGradientEnd } from '../../utils/color';
+import api from "../../services/api";
+import {login} from "../../services/auth";
+import {CommonActions} from "@react-navigation/native";
 
 export default ({ navigation }) => {
+    let [email, setEmail] = useState("");
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
-    let [confirmPassword, setConfirmPassword] = useState("");
+
+    const makeRegister = async () => {
+        if (username.length === 0 ||email.length === 0 || password.length === 0) {
+            Alert.alert('Preencha os campos para se cadastrar!');
+        } else if(password.length < 8) {
+            Alert.alert('O campo de senha deve conter no minimo 8 caracteres');
+        }else {
+            try {
+                const response = await api.post('/api/user', {
+                    name: username,
+                    email,
+                    password,
+                });
+                Alert.alert('Usuário cadastrado com sucesso!');
+                const resetAction = CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        {name: 'Home'},
+                    ]
+                });
+                navigation.dispatch(resetAction);
+            } catch (_err) {
+                console.log(_err)
+                Alert.alert('Houve um problema com o login, verifique suas credenciais!');
+            }
+        }
+    }
     return (
         <Screen>
+            <Video
+                source={{
+                    uri:
+                        "https://v.pinimg.com/videos/mc/720p/d1/89/cf/d189cf1c29fe6c58bb1c760a86fa74d5.mp4",
+                }}
+                rate={1.0}
+                isMuted={true}
+                resizeMode="cover"
+                shouldPlay
+                isLooping
+                style={styles.image}
+            />
             <StatusBar
                 backgroundColor={metalBlue}
                 barStyle="light-content"
@@ -28,16 +71,14 @@ export default ({ navigation }) => {
             <Input
                 placeholder="Nome"
                 value={username}
-                autoCompleteType="email"
-                keyboardType="email-address"
                 onChangeText={setUsername}
             />
             <Input
                 placeholder="Email"
-                value={username}
+                value={email}
                 autoCompleteType="email"
                 keyboardType="email-address"
-                onChangeText={setUsername}
+                onChangeText={setEmail}
             />
             <Input
                 placeholder="Senha"
@@ -47,15 +88,7 @@ export default ({ navigation }) => {
                 secureTextEntry={true}
                 onChangeText={setPassword}
             />
-            <Input
-                placeholder="Confirme a senha"
-                value={confirmPassword}
-                autoCompleteType="password"
-                textContentType="password"
-                secureTextEntry={true}
-                onChangeText={setConfirmPassword}
-            />
-            <ButtonLogin onPress={() => navigation.navigate("Menu")}>
+            <ButtonLogin onPress={makeRegister}>
                 <LinearGradient
                     colors={["#6f93db", "#56e3ee"]}
                     style={styles.loginButton}
@@ -85,5 +118,12 @@ const styles = StyleSheet.create({
         fontSize: normalize(18),
         color: white,
         fontFamily: "roboto-bold",
-    }
+    },
+    image: {
+        width: 450,
+        height: 1000,
+        position: 'absolute',
+        alignItems: "center",
+        justifyContent: "center",
+    },
 });

@@ -1,5 +1,6 @@
 export const white = "#ffffff";
 export const metalBlue = "#40495a";
+export const yellow = "#ffe042";
 export const logoGradientInit = "#6f93db";
 export const logoGradientEnd = "#56e3ee";
 export const skyLevel1 = "#6f93db";

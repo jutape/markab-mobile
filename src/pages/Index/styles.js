@@ -6,7 +6,6 @@ export const Screen = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background-color: ${metalBlue};
 `;
 
 export const ButtonLogin = styled.TouchableOpacity`

@@ -1,7 +1,8 @@
-import React from "react";
-import { StatusBar, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StatusBar, ScrollView, Alert } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { normalize } from "../../services/normalize";
+
 import {
     SafeView,
     ProfileImage,
@@ -10,9 +11,53 @@ import {
     Option,
     OptionText,
 } from "./styles";
-import { white, skyLevel1, skyLevel2, skyLevel3, skyLevel4 } from '../../utils/color';
+import {
+    white,
+    skyLevel1,
+    skyLevel2,
+    skyLevel3,
+    skyLevel4,
+} from "../../utils/color";
+import api from "../../services/api";
+import { logout } from "../../services/auth";
+import { CommonActions } from "@react-navigation/native";
 
 export default ({ navigation }) => {
+    const [username, setUsername] = useState("");
+    const [image, setImage] = useState(
+        "https://alumni.crg.eu/sites/default/files/default_images/default-picture_0_0.png"
+    );
+    useEffect(() => {
+        const setUserName = async () => {
+            try {
+                const response = await api.get("/api/user");
+
+                setUsername(response.data.name);
+                setImage(response.data.image);
+            } catch (_err) {
+                Alert.alert(
+                    "Houve um problema com o login, verifique suas credenciais!"
+                );
+                await logout();
+                const resetAction = CommonActions.reset({
+                    index: 1,
+                    routes: [{ name: "Home" }],
+                });
+            }
+        };
+        setUserName();
+    }, []);
+
+    const signOut = async () => {
+        await logout();
+
+        const resetAction = CommonActions.reset({
+            index: 1,
+            routes: [{ name: "Home" }],
+        });
+        navigation.dispatch(resetAction);
+    };
+
     return (
         <SafeView>
             <ScrollView
@@ -26,11 +71,10 @@ export default ({ navigation }) => {
                 ></StatusBar>
                 <ProfileImage
                     source={{
-                        uri:
-                            "https://scontent-gru2-2.cdninstagram.com/v/t51.2885-15/e35/79965207_2348984642059325_5081379317183851339_n.jpg?_nc_ht=scontent-gru2-2.cdninstagram.com&_nc_cat=105&_nc_ohc=fvtt4U0tIQwAX-ZquVV&oh=323d9d059c390d13f0060f53888c9a36&oe=5ED8B18D",
+                        uri: image,
                     }}
                 />
-                <WelcomeText>Olá Débora!</WelcomeText>
+                <WelcomeText>Olá {username}!</WelcomeText>
                 <MenuOptionsView>
                     <Option
                         colour={skyLevel1}
@@ -43,27 +87,32 @@ export default ({ navigation }) => {
                             color="white"
                         />
                     </Option>
-                    <Option colour={skyLevel2} size="one">
-                        <FontAwesome
-                            name={"users"}
-                            size={normalize(60)}
+                    <Option
+                        colour={skyLevel2}
+                        size="one"
+                        onPress={() => navigation.navigate("enterEvent1")}
+                    >
+                        <Ionicons
+                            name={"ios-play"}
+                            size={normalize(110)}
                             color="white"
                         />
                     </Option>
-                    <Option colour={skyLevel3} size="two">
-                        <OptionText>Entrar em evento</OptionText>
-                    </Option>
-                    <Option colour={skyLevel4} size="two">
+                    <Option
+                        colour={skyLevel3}
+                        size="two"
+                        onPress={() => navigation.navigate("myEvents1")}
+                    >
                         <OptionText>Meus eventos</OptionText>
                     </Option>
-                    <Option colour={skyLevel2} size="one">
+                    <Option colour={skyLevel2}  onPress={signOut} size="one">
                         <FontAwesome
-                            name={"cog"}
+                            name={"sign-out"}
                             size={normalize(80)}
                             color="white"
                         />
                     </Option>
-                    <Option colour={skyLevel1} size="one">
+                    <Option colour={skyLevel1} onPress={() => Alert.alert('Por enquanto o projeto esta em fase de desenvolvimento, ainda não temos link ;-;')} size="one">
                         <FontAwesome
                             name={"share-alt"}
                             size={normalize(80)}

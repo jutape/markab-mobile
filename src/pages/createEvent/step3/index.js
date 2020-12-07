@@ -14,12 +14,12 @@ import {
     OkButton
 } from "./style";
 
-export default ({ navigation }) => {
+export default ({ route, navigation }) => {
     const onShare = async () => {
         try {
             const result = await Share.share({
                 message:
-                    "Olá você esta sendo convidado para registrar presença no evento\n -> EB30J2\n Baixe agora o app Markab",
+                    "Olá você esta sendo convidado para registrar presença no evento\n -> " + route.params.eventCode + "\nBaixe agora o app Markab e marque sua presença!",
             });
         } catch (error) {
             alert(error.message);
@@ -29,12 +29,12 @@ export default ({ navigation }) => {
         <Container>
             <CodePanel
                 onPress={() => {
-                    Clipboard.setString("EB30J2");
+                    Clipboard.setString(route.params.eventCode);
                     Alert.alert("Copiado com sucesso!");
                 }}
             >
                 <TitlePanel>Seu código do evento é:</TitlePanel>
-                <CodeEvent>EB30J2</CodeEvent>
+                <CodeEvent>{route.params.eventCode}</CodeEvent>
                 <LineSeparator></LineSeparator>
                 <CopyText>Copiar</CopyText>
             </CodePanel>
@@ -45,7 +45,7 @@ export default ({ navigation }) => {
                     color={metalBlue}
                 />
             </ShareButton>
-            <OkButton onPress={onShare}>
+            <OkButton onPress={() => {navigation.navigate("Menu")}}>
                 <Ionicons
                     name={"ios-checkmark"}
                     size={normalize(70)}
